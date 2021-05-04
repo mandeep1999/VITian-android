@@ -8,7 +8,7 @@
     >
 
     <TextView
-        android:id="@+id/home"
+        android:id="@+id/friends"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/curved_top"
@@ -31,7 +31,7 @@
         android:background="@color/indigo"
         android:scaleType="fitXY"
         android:tint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/home"
+        app:layout_constraintBottom_toBottomOf="@+id/friends"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.952"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,19 +42,19 @@
         android:layout_width="297dp"
         android:layout_height="48dp"
         android:layout_marginTop="28dp"
-        android:drawableLeft="@drawable/ic_baseline_search_24"
+        android:drawableStart="@drawable/ic_baseline_search_24"
         android:ems="10"
-        android:hint="Search"
+        android:hint="@string/search"
         android:minWidth="250dp"
         android:padding="10dp"
         android:background="@drawable/rounded_border_edittext"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home" />
+        app:layout_constraintTop_toBottomOf="@+id/friends" />
 
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/list_friends"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"

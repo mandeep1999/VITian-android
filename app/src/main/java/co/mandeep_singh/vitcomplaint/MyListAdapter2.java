@@ -17,7 +17,7 @@ class MyListAdapter2 extends ArrayAdapter<String> {
     private final Integer[] imgid;
 
     public MyListAdapter2(Activity context, String[] maintitle, String[] subtitle, Integer[] imgid) {
-        super(context, R.layout.complaints_list, maintitle);
+        super(context, R.layout.friends_list, maintitle);
         // TODO Auto-generated constructor stub
 
         this.context=context;
@@ -29,7 +29,7 @@ class MyListAdapter2 extends ArrayAdapter<String> {
 
     public View getView(int position,View view,ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View rowView = inflater.inflate(R.layout.complaints_list, null,true);
+        View rowView = inflater.inflate(R.layout.friends_list, null,true);
 
         TextView titleText = (TextView) rowView.findViewById(R.id.title);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.profile_photo);
@@ -39,17 +39,6 @@ class MyListAdapter2 extends ArrayAdapter<String> {
         imageView.setImageResource(imgid[position]);
         subtitleText.setText(subtitle[position]);
 
-        Spinner spinner1 = (Spinner) rowView.findViewById(R.id.spinner1);
-        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(rowView.getContext(),
-                R.array.status_array, R.layout.spinner_list);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner1.setAdapter(adapter1);
-
-        Spinner spinner2 = (Spinner) rowView.findViewById(R.id.spinner2);
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(rowView.getContext(),
-                R.array.urgent_array, R.layout.spinner_list);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner2.setAdapter(adapter2);
 
         return rowView;
 

@@ -14,5 +14,7 @@
     <string name="room_no">Room no.</string>
     <string name="name">Name</string>
     <string name="electricity">Electricity</string>
+    <string name="send">Send -></string>
+    <string name="search">Search</string>
 
 </resources>

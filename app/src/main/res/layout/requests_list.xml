@@ -82,7 +82,8 @@
 
             <Button
                 style="?android:attr/borderlessButtonStyle"
-                android:layout_width="180dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:background="@color/indigo"
                 android:textColor="@color/white"
@@ -91,7 +92,8 @@
 
             <Button
                 style="?android:attr/borderlessButtonStyle"
-                android:layout_width="181dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:background="@color/indigo"
                 android:textColor="@color/white"

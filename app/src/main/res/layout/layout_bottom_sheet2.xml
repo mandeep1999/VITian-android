@@ -36,7 +36,8 @@
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/indigo"
+        android:minWidth="200dp"
+        android:background="@drawable/rounded_button_color"
         android:textColor="@color/white"
         android:layout_marginBottom="10dp"
         android:text="@string/close"/>

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -14,8 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 public class FriendsFragement extends Fragment {
-    ListView list;
+    ListView list, requestsList;
     ImageButton friendsListBtn;
     View rootView;
     String[] maintitle ={
@@ -52,7 +55,20 @@ public class FriendsFragement extends Fragment {
         friendsListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
+                View bottomSheetView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_bottom_sheet2,(LinearLayout)rootView.findViewById(R.id.bottomSheetContainer2));
+                MyListAdapter3 adapter =new MyListAdapter3(getActivity(), maintitle, subtitle,imgid);
+                requestsList=(ListView)bottomSheetView.findViewById(R.id.requests_list);
+                requestsList.setAdapter(adapter);
 
+                bottomSheetView.findViewById(R.id.close_btn).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bottomSheetDialog.dismiss();
+                    }
+                });
+                bottomSheetDialog.setContentView(bottomSheetView);
+                bottomSheetDialog.show();
             }
         });
     }

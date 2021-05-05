@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:id="@+id/bottomSheetContainer"
+    android:id="@+id/bottomSheetContainer2"
     android:layout_height="match_parent"
     android:background="@drawable/bottom_sheet_background"
     android:orientation="vertical"
     >
     <TextView
+        android:id="@+id/friend_requests"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="15dp"
-        android:text="@string/submit_complaint"
+        android:text="@string/friend_requests"
         android:textColor="@color/indigo"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -21,104 +22,25 @@
         android:layout_height="1dp"
         android:layout_marginBottom="10dp"
         android:background="@color/white"/>
-    <LinearLayout
+    <ListView
+        android:id="@+id/requests_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        >
-        <ImageView
-            android:id="@+id/complaint_image"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            android:src="@drawable/task"
-            android:background="@drawable/rounded_button_color"
-            android:layout_marginEnd="10dp"
-            />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <Spinner
-                android:id="@+id/complaints_type"
-                android:layout_width="match_parent"
-                android:layout_height="57dp"
-                android:textAlignment="center" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="15dp"
-                android:background="@color/white"/>
-
-            <EditText
-                android:id="@+id/remark"
-                android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:background="@drawable/rounded_border_edittext"
-                android:hint="@string/remark"
-                android:textAlignment="center"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="15dp"
-        android:background="@color/white"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="144dp"
-            android:layout_height="match_parent"
-            android:text="@string/status"
-            android:textColor="@color/indigo"
-            android:textAlignment="center"
-            android:paddingTop="20dp"
-            android:textSize="18sp" />
-        <Spinner
-            android:id="@+id/status_type2"
-            android:layout_width="match_parent"
-            android:textAlignment="center"
-            android:layout_height="68dp" /></LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="10dp"
-        android:background="@color/white"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="144dp"
-            android:layout_height="match_parent"
-            android:text="@string/priority"
-            android:textColor="@color/indigo"
-            android:textAlignment="center"
-            android:paddingTop="20dp"
-            android:textSize="18sp" />
-        <Spinner
-            android:id="@+id/urgent_type2"
-            android:layout_width="match_parent"
-            android:textAlignment="center"
-            android:layout_height="68dp" /></LinearLayout>
+        android:layout_height="500dp"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginBottom="15dp"
         android:background="@color/white"/>
     <Button
-        android:id="@+id/submit_complaint"
+        android:id="@+id/close_btn"
+        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:minWidth="200dp"
-        android:textColor="@color/white"
         android:backgroundTint="@color/indigo"
-        android:text="@string/submit"
-        />
+        android:textColor="@color/white"
+        android:layout_marginBottom="10dp"
+        android:text="@string/close"/>
+
+
+
 </LinearLayout>

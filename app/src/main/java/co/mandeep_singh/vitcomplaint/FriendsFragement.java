@@ -39,7 +39,6 @@ public class FriendsFragement extends Fragment {
         MyListAdapter2 adapter=new MyListAdapter2(getActivity(), maintitle, subtitle,imgid);
         list=(ListView)rootView.findViewById(R.id.list_friends);
         list.setAdapter(adapter);
-        list.setDivider(null);
         establishList();
         return rootView;
     }

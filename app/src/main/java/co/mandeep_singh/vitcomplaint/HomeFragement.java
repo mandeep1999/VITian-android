@@ -39,7 +39,6 @@ public class HomeFragement extends Fragment {
         MyListAdapter adapter=new MyListAdapter(getActivity(), maintitle, subtitle,imgid);
         list=(ListView)rootView.findViewById(R.id.list);
         list.setAdapter(adapter);
-        list.setDivider(null);
         establishList();
         return rootView;
     }

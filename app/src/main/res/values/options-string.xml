@@ -9,4 +9,10 @@
         <item>Urgent</item>
         <item>Not Urgent</item>
     </string-array>
+    <string-array name="complaint_type">
+        <item>Electricity</item>
+        <item>AC</item>
+        <item>Room Cleaning</item>
+        <item>Other</item>
+    </string-array>
 </resources>

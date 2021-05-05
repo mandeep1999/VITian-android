@@ -16,5 +16,10 @@
     <string name="electricity">Electricity</string>
     <string name="send">Send -></string>
     <string name="search">Search</string>
+    <string name="submit_complaint">Submit Complaint</string>
+    <string name="remark">Remark</string>
+    <string name="submit">Submit</string>
+    <string name="status">Status : </string>
+    <string name="priority">Priority :</string>
 
 </resources>

@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 import co.mandeep_singh.vitcomplaint.Modal.HomeModel;
 
@@ -36,7 +38,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.MyView
 
     public void deleteTask(int position){
         HomeModel homeModel  = homeList.get(position);
-        String temp = "complaints/" + homeModel.getBlock() + "/" + homeModel.getRoomNo();
+        String temp = "complaints/" + homeModel.getBlock() + "/complaints";
         firestore.collection(temp).document(homeModel.HomeId).delete();
         homeList.remove(position);
         notifyItemRemoved(position);
@@ -73,6 +75,9 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.MyView
             int spinnerPosition = adapter3.getPosition(homeModel.getUrgent());
             holder.urgent.setSelection(spinnerPosition);
         }
+        if(homeModel.getComplaintPhoto() != null){
+            Picasso.with(activity.getActivity()).load(homeModel.getComplaintPhoto()).into(holder.complaint_image);
+        }
 
         String block = homeModel.getBlock();
         String roomNo = homeModel.getRoomNo();
@@ -81,7 +86,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.MyView
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String temp = parent.getItemAtPosition(position).toString();
-                    firestore.collection("complaints/"+ block + "/" + roomNo).document(homeModel.HomeId).update("urgent",temp);
+                    firestore.collection("complaints/" + block +"/complaints").document(homeModel.HomeId).update("urgent",temp);
             }
 
             @Override
@@ -93,7 +98,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.MyView
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String temp = parent.getItemAtPosition(position).toString();
-                    firestore.collection("complaints/"+ block + "/" + roomNo).document(homeModel.HomeId).update("status",temp);
+                    firestore.collection("complaints/" + block +"/complaints").document(homeModel.HomeId).update("status",temp);
             }
 
             @Override

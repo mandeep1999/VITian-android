@@ -68,7 +68,7 @@ public class HomeFragement extends Fragment implements OnDialogCloseListener {
         showData();
     }
     private void showData() {
-        query = firestore.collection("complaints/" + block + "/" + roomNo);
+        query = firestore.collection("complaints/" + block +"/complaints");
         listenerRegistration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {

@@ -1,5 +1,6 @@
 package co.mandeep_singh.vitcomplaint.Modal;
 
+
 public class StudentModel extends StudentId {
     private String friendName, friendRoomNo, friendPhoto, requestStatus;
 

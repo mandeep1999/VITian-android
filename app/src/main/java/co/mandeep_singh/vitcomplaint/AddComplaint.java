@@ -97,7 +97,7 @@ public class AddComplaint extends BottomSheetDialogFragment {
                         taskMap.put("block", block);
                         taskMap.put("roomNo", roomNo);
                         taskMap.put("time", FieldValue.serverTimestamp());
-                        firestore.collection(  "complaints/" + block + "/"+ roomNo )
+                        firestore.collection(  "complaints/" + block +"/complaints")
                                 .document(LocalDateTime.now().toString()).set(taskMap)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override

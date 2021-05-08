@@ -1,22 +1,13 @@
 package co.mandeep_singh.vitcomplaint;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import co.mandeep_singh.vitcomplaint.HomeFragement;
 
 class MyListAdapter2 extends ArrayAdapter<String> {
 
@@ -52,38 +43,4 @@ class MyListAdapter2 extends ArrayAdapter<String> {
         return rowView;
 
     };
-
-    public static class HomeActivity extends AppCompatActivity {
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            getSupportActionBar().hide();
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            setContentView(R.layout.activity_home);
-            BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-            bottomNav.setOnNavigationItemSelectedListener(navListener);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragement()).commit();
-        }
-        private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment selectedFragment = null;
-                switch(item.getItemId()){
-                    case R.id.home:
-                        selectedFragment = new HomeFragement();
-                        break;
-                    case R.id.profile:
-                        selectedFragment = new MyListAdapter3.ProfileFragment();
-                        break;
-                    case R.id.search_person:
-                        selectedFragment = new FriendsFragement();
-                        break;
-                }
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
-                return true;
-                }
-            };
-    }
 }

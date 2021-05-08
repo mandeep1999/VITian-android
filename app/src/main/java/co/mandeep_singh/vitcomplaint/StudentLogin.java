@@ -2,6 +2,7 @@ package co.mandeep_singh.vitcomplaint;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -30,6 +31,8 @@ public class StudentLogin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), email.getText() + " " + password.getText(), Toast.LENGTH_LONG).show();
+                Intent i = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(i);
             }
         });
     }

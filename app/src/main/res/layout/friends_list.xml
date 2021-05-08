@@ -16,10 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -73,23 +70,6 @@
                     android:textColor="@color/indigo" />
             </LinearLayout>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
 
-           <TextView
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:text="@string/send"
-               android:background="@color/indigo"
-               android:textColor="@color/white"
-               android:textAlignment="center"
-               android:padding="8dp"
-               android:textSize="18sp"
-/>
-
-        </LinearLayout>
-        </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

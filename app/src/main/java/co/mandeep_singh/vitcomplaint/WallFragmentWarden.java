@@ -1,6 +1,5 @@
 package co.mandeep_singh.vitcomplaint;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-public class FriendsFragement extends Fragment {
+public class WallFragmentWarden extends Fragment {
     ListView list, requestsList;
     ImageButton friendsListBtn;
     View rootView;
@@ -41,7 +39,7 @@ public class FriendsFragement extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_friends, container,false);
+        rootView = inflater.inflate(R.layout.fragment_wall_warden, container,false);
         MyListAdapter2 adapter=new MyListAdapter2(getActivity(), maintitle, subtitle,imgid);
         friendsListBtn = rootView.findViewById(R.id.friends_btn);
         list=(ListView)rootView.findViewById(R.id.list_friends);
@@ -56,7 +54,7 @@ public class FriendsFragement extends Fragment {
             @Override
             public void onClick(View v) {
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
-                View bottomSheetView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_bottom_sheet2,(LinearLayout)rootView.findViewById(R.id.bottomSheetContainer2));
+                View bottomSheetView = LayoutInflater.from(getActivity()).inflate(R.layout.notifications_bottomsheet,(LinearLayout)rootView.findViewById(R.id.bottomSheetContainer2));
                 MyListAdapter3 adapter =new MyListAdapter3(getActivity(), maintitle, subtitle,imgid);
                 requestsList=(ListView)bottomSheetView.findViewById(R.id.requests_list);
                 requestsList.setAdapter(adapter);

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="15dp"
-        android:text="@string/friend_requests"
+        android:text="@string/notifications"
         android:textColor="@color/indigo"
         android:textSize="20sp"
         android:textStyle="bold"

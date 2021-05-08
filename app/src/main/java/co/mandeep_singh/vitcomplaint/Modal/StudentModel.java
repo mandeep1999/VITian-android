@@ -2,22 +2,25 @@ package co.mandeep_singh.vitcomplaint.Modal;
 
 
 public class StudentModel extends StudentId {
-    private String friendName, friendRoomNo, friendPhoto, requestStatus;
+    private String name, phoneNo, roomNo, block, imageUrl;
 
-    public String getFriendName() {
-        return friendName;
+    public String getPhoneNo() {
+        return phoneNo;
     }
 
-    public String getFriendPhoto() {
-        return friendPhoto;
+    public String getName() {
+        return name;
     }
 
-    public String getFriendRoomNo() {
-        return friendRoomNo;
+    public String getBlock() {
+        return block;
     }
 
-    public String getRequestStatus() {
-        return requestStatus;
+    public String getRoomNo() {
+        return roomNo;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
 }

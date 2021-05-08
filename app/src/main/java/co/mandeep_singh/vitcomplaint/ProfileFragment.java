@@ -184,7 +184,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void SaveToFirebase() {
-        firestore.collection(  "profiles")
+        firestore.collection(  "profiles/students/profile")
                 .document(studentId).set(ProfileMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

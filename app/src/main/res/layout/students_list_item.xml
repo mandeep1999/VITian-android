@@ -23,7 +23,7 @@
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_photo"
+                android:id="@+id/student_item_photo"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginTop="15dp"
@@ -50,7 +50,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/title"
+                    android:id="@+id/student_item_name"
                     android:layout_width="255dp"
                     android:layout_height="wrap_content"
                     android:padding="2dp"
@@ -61,7 +61,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/subtitle"
+                    android:id="@+id/student_item_roomNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="A-651"

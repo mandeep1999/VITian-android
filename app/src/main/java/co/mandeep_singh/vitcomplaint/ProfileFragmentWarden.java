@@ -136,7 +136,7 @@ public class ProfileFragmentWarden extends Fragment {
 
 
     private void fetchProfile() {
-        DocumentReference docRef = firestore.collection("profiles").document(wardenId);
+        DocumentReference docRef = firestore.collection("profiles/warden/profile").document(wardenId);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -183,7 +183,7 @@ public class ProfileFragmentWarden extends Fragment {
     }
 
     private void SaveToFirebase() {
-        firestore.collection(  "profiles")
+        firestore.collection(  "profiles/warden/profile")
                 .document(wardenId).set(ProfileMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

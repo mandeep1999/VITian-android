@@ -36,7 +36,7 @@ public class HomeActivityWarden extends AppCompatActivity {
                     selectedFragment = new ProfileFragmentWarden();
                     break;
                 case R.id.search_person:
-                    selectedFragment = new StudentsFragementWarden();
+                    selectedFragment = new StudentsFragmentWarden();
                     break;
                 case R.id.wall:
                     selectedFragment = new WallFragmentWarden();

@@ -75,7 +75,7 @@
 
 
     <EditText
-        android:id="@+id/person_name_warden"
+        android:id="@+id/phone_no_warden"
         android:layout_width="318dp"
         android:layout_height="45dp"
         android:layout_marginBottom="24dp"
@@ -94,7 +94,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/phone_no_warden"
+        android:id="@+id/person_name_warden"
         android:layout_width="318dp"
         android:layout_height="45dp"
         android:layout_marginBottom="24dp"
@@ -107,7 +107,7 @@
         android:padding="8dp"
         android:paddingStart="10dp"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/person_name_warden"
+        app:layout_constraintBottom_toTopOf="@+id/phone_no_warden"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent" />

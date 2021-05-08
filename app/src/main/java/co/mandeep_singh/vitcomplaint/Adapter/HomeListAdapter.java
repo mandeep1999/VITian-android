@@ -75,8 +75,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.MyView
             int spinnerPosition = adapter3.getPosition(homeModel.getUrgent());
             holder.urgent.setSelection(spinnerPosition);
         }
-        if(homeModel.getComplaintPhoto() != null){
-            Picasso.with(activity.getActivity()).load(homeModel.getComplaintPhoto()).into(holder.complaint_image);
+        if(!homeModel.getImage().equals("")){
+            Picasso.with(activity.getActivity()).load(homeModel.getImage()).into(holder.complaint_image);
         }
 
         String block = homeModel.getBlock();

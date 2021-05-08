@@ -12,7 +12,7 @@
 
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_photo"
+        android:id="@+id/profile_photo_warden"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_alignParentStart="true"
@@ -60,7 +60,7 @@
         app:srcCompat="@drawable/ic_baseline_logout_24" />
 
     <ImageButton
-        android:id="@+id/editPen"
+        android:id="@+id/editPen_warden"
         android:layout_width="35dp"
         android:layout_height="40dp"
         android:layout_marginStart="128dp"
@@ -68,31 +68,14 @@
         android:background="@color/white"
         android:scaleType="fitXY"
         android:tint="@color/indigo"
-        app:layout_constraintStart_toStartOf="@+id/profile_photo"
-        app:layout_constraintTop_toTopOf="@+id/profile_photo"
+        app:layout_constraintStart_toStartOf="@+id/profile_photo_warden"
+        app:layout_constraintTop_toTopOf="@+id/profile_photo_warden"
         app:srcCompat="@drawable/ic_baseline_edit_24" />
 
-    <EditText
-        android:id="@+id/room_no"
-        android:layout_width="318dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/rounded_border_edittext"
-        android:drawableStart="@drawable/ic_baseline_bedroom_parent_24"
-        android:drawablePadding="7dp"
-        android:ems="10"
-        android:hint="@string/room_no"
-        android:inputType="textPersonName"
-        android:padding="7dp"
-        android:paddingStart="10dp"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent" />
+
 
     <EditText
-        android:id="@+id/person_name"
+        android:id="@+id/person_name_warden"
         android:layout_width="318dp"
         android:layout_height="45dp"
         android:layout_marginBottom="24dp"
@@ -105,13 +88,13 @@
         android:padding="7dp"
         android:paddingStart="10dp"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/spinner"
+        app:layout_constraintBottom_toTopOf="@+id/block_spinner_warden"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/phone_no"
+        android:id="@+id/phone_no_warden"
         android:layout_width="318dp"
         android:layout_height="45dp"
         android:layout_marginBottom="24dp"
@@ -124,13 +107,13 @@
         android:padding="8dp"
         android:paddingStart="10dp"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/person_name"
+        app:layout_constraintBottom_toTopOf="@+id/person_name_warden"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/update_warden"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -144,13 +127,13 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/block_spinner_warden"
         android:layout_width="318dp"
         android:layout_height="42dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/rounded_border_edittext"
         android:paddingStart="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/room_no"
+        app:layout_constraintBottom_toTopOf="@+id/update_warden"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent" />

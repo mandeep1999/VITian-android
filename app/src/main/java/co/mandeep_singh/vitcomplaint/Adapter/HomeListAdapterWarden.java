@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -78,6 +79,9 @@ public class HomeListAdapterWarden extends RecyclerView.Adapter<HomeListAdapterW
         if(homeModel.getUrgent() != null){
             int spinnerPosition = adapter3.getPosition(homeModel.getUrgent());
             holder.urgent.setSelection(spinnerPosition);
+        }
+        if(!homeModel.getImage().equals("")){
+            Picasso.with(activity.getActivity()).load(homeModel.getImage()).into(holder.complaint_image);
         }
 
         String block = homeModel.getBlock();

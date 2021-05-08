@@ -102,7 +102,7 @@ public class ProfileFragment extends Fragment {
             StorageReference ref
                     = storageReference
                     .child(
-                            "images/profiles"
+                            "images/profiles/student"
                                     + studentId);
             //error
             uploadTask = ref.putFile(filePath);

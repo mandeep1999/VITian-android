@@ -57,7 +57,7 @@ public class WardenLogin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), email.getText() + " " + password.getText(), Toast.LENGTH_LONG).show();
-                Intent i = new Intent(getApplicationContext(),HomeActivity.class);
+                Intent i = new Intent(getApplicationContext(), MyListAdapter2.HomeActivity.class);
                 startActivity(i);
             }
         });

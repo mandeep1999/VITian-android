@@ -58,7 +58,7 @@ public class HomeFragementWarden extends Fragment implements OnDialogCloseListen
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new TouchHelperWarden(adapter));
         itemTouchHelper.attachToRecyclerView(recyclerView);
         recyclerView.setAdapter(adapter);
-
+        showData();
     }
     private void showData() {
         query = firestore.collection("complaints/" + block + "/" + roomNo);

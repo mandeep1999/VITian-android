@@ -41,13 +41,25 @@ public class StudentsFragementWarden extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_studentlist_warden, container,false);
         MyListAdapter2 adapter=new MyListAdapter2(getActivity(), maintitle, subtitle,imgid);
-        friendsListBtn = rootView.findViewById(R.id.friends_btn);
         list=(ListView)rootView.findViewById(R.id.list_friends);
         list.setAdapter(adapter);
-
+        establishList();
         return rootView;
     }
 
+
+
+    private void establishList() {
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                // TODO Auto-generated method stub
+
+
+            }
+        });
+    }
 
 
 }

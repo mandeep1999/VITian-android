@@ -23,7 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <ImageButton
-        android:id="@+id/friends_btn"
+        android:id="@+id/notifications_btn"
         android:layout_width="38dp"
         android:layout_height="38dp"
         android:layout_marginStart="16dp"

@@ -11,16 +11,14 @@ import android.widget.TextView;
 class MyListAdapter3 extends ArrayAdapter<String> {
 
     private final Activity context;
-    private final String[] maintitle;
     private final String[] subtitle;
     private final Integer[] imgid;
 
-    public MyListAdapter3(Activity context, String[] maintitle, String[] subtitle, Integer[] imgid) {
-        super(context, R.layout.requests_list, maintitle);
+    public MyListAdapter3(Activity context,  String[] subtitle, Integer[] imgid) {
+        super(context, R.layout.notifications_list, subtitle);
         // TODO Auto-generated constructor stub
 
         this.context=context;
-        this.maintitle=maintitle;
         this.subtitle=subtitle;
         this.imgid=imgid;
 
@@ -28,14 +26,14 @@ class MyListAdapter3 extends ArrayAdapter<String> {
 
     public View getView(int position,View view,ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View rowView = inflater.inflate(R.layout.requests_list, null,true);
+        View rowView = inflater.inflate(R.layout.notifications_list, null,true);
 
-        TextView titleText = (TextView) rowView.findViewById(R.id.request_name);
+
         ImageView imageView = (ImageView) rowView.findViewById(R.id.request_photo);
         TextView subtitleText = (TextView) rowView.findViewById(R.id.request_room_no);
 
 
-        titleText.setText(maintitle[position]);
+
         imageView.setImageResource(imgid[position]);
         subtitleText.setText(subtitle[position]);
 

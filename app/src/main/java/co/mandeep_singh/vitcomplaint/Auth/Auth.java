@@ -9,34 +9,37 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import co.mandeep_singh.vitcomplaint.HomeActivity;
 import co.mandeep_singh.vitcomplaint.HomeActivityWarden;
 import co.mandeep_singh.vitcomplaint.MainActivity;
+import co.mandeep_singh.vitcomplaint.Modal.ProfileModel;
 import co.mandeep_singh.vitcomplaint.Modal.UserModel;
 import co.mandeep_singh.vitcomplaint.SplashActivity;
 
 
 public class Auth{
 
-    public String errorMessage = "";
-    final FirebaseFirestore _firestore = FirebaseFirestore.getInstance();
+    static final FirebaseFirestore _firestore = FirebaseFirestore.getInstance();
     final FirebaseAuth _firebaseAuth = FirebaseAuth.getInstance();
     public static FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     public static String id = user!=null ?  user.getUid() : null ;
+    public static boolean warden = false;
+    public static String block = null;
+    public static  String roomNo = null;
 
     public void SignUp(String email, String password, boolean warden, Activity activity, ProgressBar progressBar) {
         try {
@@ -107,6 +110,9 @@ public class Auth{
         _firebaseAuth.signOut();
         id = null;
         user = null;
+        warden = false;
+        block = null;
+        roomNo = null;
     }
 
     public void resetPassword(String email){
@@ -152,10 +158,14 @@ public class Auth{
                 if(user != null && user.isEmailVerified()){
                     if(returnValue[0] == 0)
                         splashActivity.startActivity(new Intent(splashActivity, MainActivity.class));
-                    if(returnValue[0] == 1)
+                    if(returnValue[0] == 1){
+                        warden = true;
                         splashActivity.startActivity(new Intent(splashActivity, HomeActivityWarden.class));
-                    if(returnValue[0] == -1)
+                    }
+                    if(returnValue[0] == -1){
+                        warden = false;
                         splashActivity.startActivity(new Intent(splashActivity, HomeActivity.class));
+                    }
                 }
                 else{
                     splashActivity.startActivity(new Intent(splashActivity,MainActivity.class));
@@ -165,5 +175,6 @@ public class Auth{
         },4000);
 
     }
+
 
 }

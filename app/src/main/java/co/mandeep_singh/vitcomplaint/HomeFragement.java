@@ -14,7 +14,10 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -26,8 +29,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.mandeep_singh.vitcomplaint.Adapter.HomeListAdapter;
+import co.mandeep_singh.vitcomplaint.Auth.Auth;
 import co.mandeep_singh.vitcomplaint.Modal.HomeModel;
 import co.mandeep_singh.vitcomplaint.AddComplaint;
+import co.mandeep_singh.vitcomplaint.Modal.ProfileModel;
 import co.mandeep_singh.vitcomplaint.TouchHelper;
 
 public class HomeFragement extends Fragment implements OnDialogCloseListener {
@@ -39,7 +44,6 @@ public class HomeFragement extends Fragment implements OnDialogCloseListener {
     private List<HomeModel> mList;
     private Query query;
     private ListenerRegistration listenerRegistration;
-    private String block ="L", roomNo = "202";
 
     @Nullable
     @Override
@@ -68,21 +72,38 @@ public class HomeFragement extends Fragment implements OnDialogCloseListener {
         showData();
     }
     private void showData() {
-        query = firestore.collection("complaints/" + block +"/complaints");
-        listenerRegistration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        DocumentReference docRef = firestore.collection("profiles/students/profile").document(Auth.id);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
-                    if (documentChange.getType() == DocumentChange.Type.ADDED) {
-                        String id = documentChange.getDocument().getId();
-                        HomeModel homeModel = documentChange.getDocument().toObject(HomeModel.class).withId(id);
-                        mList.add(homeModel);
-                        adapter.notifyDataSetChanged();
-                    }
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.toObject(ProfileModel.class) != null){
+                    ProfileModel profileModel = documentSnapshot.toObject(ProfileModel.class).withId(Auth.id);
+                    Auth.roomNo = profileModel.getRoomNo();
+                    Auth.block = profileModel.getBlock();
+                    query = firestore.collection("complaints/" + Auth.block +"/complaints");
+                    listenerRegistration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                            for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
+                                if (documentChange.getType() == DocumentChange.Type.ADDED) {
+                                    String id = documentChange.getDocument().getId();
+                                    HomeModel homeModel = documentChange.getDocument().toObject(HomeModel.class).withId(id);
+                                    if(homeModel.getRoomNo().equals(Auth.roomNo))
+                                    {
+                                        mList.add(homeModel);
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                }
+                            }
+                        }
+                    });
                 }
             }
         });
+
     }
+
+
 
     @Override
     public void onDialogClose(DialogInterface dialogInterface) {

@@ -40,7 +40,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class ProfileFragment extends Fragment {
     String[] Blocks = { "A Block", "B Block", "C Block", "D Block", "E Block"};
-    String name, roomNo, phoneNo, block, profileUrl, studentId = "mandeep Singh";
+    String name, roomNo, phoneNo, block, profileUrl, studentId = Auth.id;
     Spinner spinner;
     EditText nameEditText, phoneNoEditText, roomNoEditText;
     CircleImageView profilePhotoStudent;
@@ -156,10 +156,11 @@ public class ProfileFragment extends Fragment {
                 profileUrl = profileModel.getImageUrl();
                 block = profileModel.getBlock();
                 phoneNo = profileModel.getPhoneNo();
-
                 nameEditText.setText(name);
                 roomNoEditText.setText(roomNo);
                 phoneNoEditText.setText(phoneNo);
+                Auth.block = block;
+                Auth.roomNo = roomNo;
 
                 if(profileUrl!= null){
                         Picasso.with(context).load(profileUrl).into(profilePhotoStudent);
@@ -208,6 +209,7 @@ public class ProfileFragment extends Fragment {
                 Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+        fetchProfile();
     }
 
     private void establishSpinner(){

@@ -151,7 +151,7 @@ public class StudentsListAdapter extends RecyclerView.Adapter<StudentsListAdapte
             holder.studentRoomNo.setText(temp);
         }
 
-        if(!studentModel.getImageUrl().equals("")){
+        if(studentModel.getImageUrl() != null){
             Picasso.with(activity.getActivity()).load(studentModel.getImageUrl()).into(holder.studentPhoto);
         }
 

@@ -36,6 +36,8 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import co.mandeep_singh.vitcomplaint.Auth.Auth;
+
 import static android.app.Activity.RESULT_OK;
 
 public class AddComplaint extends BottomSheetDialogFragment {
@@ -51,7 +53,7 @@ public class AddComplaint extends BottomSheetDialogFragment {
     UploadTask uploadTask;
     private  Uri filePath;
     private Context context;
-    private String  block = "L", roomNo = "202", studentId = "mandeep";
+    private String  block = Auth.block, roomNo = Auth.roomNo, studentId = Auth.id;
     Map<String, Object> taskMap = new HashMap<>();
 
     public static AddComplaint newInstance(){

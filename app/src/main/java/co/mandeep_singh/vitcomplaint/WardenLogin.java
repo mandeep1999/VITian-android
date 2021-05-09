@@ -91,12 +91,14 @@ public class WardenLogin extends AppCompatActivity {
             public void onClick(View v) {
                 if (button.getText().toString().equals("Sign up")){
                     if(!email.getText().toString().equals("") && !password.getText().toString().equals("") && Patterns.EMAIL_ADDRESS.matcher(email.getText().toString().trim()).matches()){
-                        auth.SignUp(email.getText().toString(),password.getText().toString(),true, WardenLogin.this);
+                        progressBar.setVisibility(View.VISIBLE);
+                        auth.SignUp(email.getText().toString(),password.getText().toString(),true, WardenLogin.this,progressBar);
                     }
                 }
                 else {
                     if(!email.getText().toString().equals("") && !password.getText().toString().equals("")  && Patterns.EMAIL_ADDRESS.matcher(email.getText().toString().trim()).matches()){
-                        auth.SignIn(email.getText().toString(),password.getText().toString(),true, WardenLogin.this);
+                        progressBar.setVisibility(View.VISIBLE);
+                        auth.SignIn(email.getText().toString(),password.getText().toString(),true, WardenLogin.this,progressBar);
                     }
                 }
             }

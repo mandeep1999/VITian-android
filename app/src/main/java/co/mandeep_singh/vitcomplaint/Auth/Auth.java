@@ -3,11 +3,11 @@ package co.mandeep_singh.vitcomplaint.Auth;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -38,7 +38,7 @@ public class Auth{
     public static FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     public static String id = user!=null ?  user.getUid() : null ;
 
-    public void SignUp(String email, String password, boolean warden, Activity activity) {
+    public void SignUp(String email, String password, boolean warden, Activity activity, ProgressBar progressBar) {
         try {
                 _firebaseAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
@@ -54,16 +54,19 @@ public class Auth{
                                 else {
                                     Toast.makeText(activity, "Something went wrong" ,Toast.LENGTH_LONG).show();
                                 }
+                                progressBar.setVisibility(View.INVISIBLE);
                             }
                         });
 
         }
         catch (Exception e){
             Toast.makeText(activity, e.getMessage() ,Toast.LENGTH_LONG).show();
+            progressBar.setVisibility(View.INVISIBLE);
         }
+
     }
 
-    public void SignIn(String email, String password, boolean warden, Activity activity) {
+    public void SignIn(String email, String password, boolean warden, Activity activity, ProgressBar progressBar) {
         try {
                 _firebaseAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener( activity, new OnCompleteListener<AuthResult>() {
@@ -89,11 +92,13 @@ public class Auth{
                                 else {
                                     Toast.makeText(activity, "Something went wrong" ,Toast.LENGTH_LONG).show();
                                 }
+                                progressBar.setVisibility(View.INVISIBLE);
                             }
                         });
         }
         catch (Exception e){
             Toast.makeText(activity, e.getMessage() ,Toast.LENGTH_LONG).show();
+            progressBar.setVisibility(View.INVISIBLE);
         }
     }
 

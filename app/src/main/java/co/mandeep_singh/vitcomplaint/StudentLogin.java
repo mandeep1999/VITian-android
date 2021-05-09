@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ public class StudentLogin extends AppCompatActivity {
     Button button;
     EditText email, password;
     TextView newApp, resetPassword;
+    ProgressBar progressBar;
     Auth auth = new Auth();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class StudentLogin extends AppCompatActivity {
         password = findViewById(R.id.Password_student);
         newApp = findViewById(R.id.new_student);
         resetPassword = findViewById(R.id.resetPassword_Student);
+        progressBar = findViewById(R.id.progressBar_student_login);
         addButtonListener();
         addNewAppListener();
         resetPassword.setOnClickListener(new View.OnClickListener() {
@@ -89,12 +92,14 @@ public class StudentLogin extends AppCompatActivity {
             public void onClick(View v) {
                 if (button.getText().toString().equals("Sign up")){
                     if(!email.getText().toString().equals("") && !password.getText().toString().equals("") && Patterns.EMAIL_ADDRESS.matcher(email.getText().toString().trim()).matches()){
-                        auth.SignUp(email.getText().toString(),password.getText().toString(),false, StudentLogin.this);
+                        progressBar.setVisibility(View.VISIBLE);
+                        auth.SignUp(email.getText().toString(),password.getText().toString(),false, StudentLogin.this, progressBar);
                     }
                 }
                 else {
                     if(!email.getText().toString().equals("") && !password.getText().toString().equals("")  && Patterns.EMAIL_ADDRESS.matcher(email.getText().toString().trim()).matches()){
-                        auth.SignIn(email.getText().toString(),password.getText().toString(),false, StudentLogin.this);
+                        progressBar.setVisibility(View.VISIBLE);
+                        auth.SignIn(email.getText().toString(),password.getText().toString(),false, StudentLogin.this, progressBar);
                     }
                 }
             }

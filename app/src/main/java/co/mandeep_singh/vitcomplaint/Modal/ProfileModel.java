@@ -1,7 +1,7 @@
 package co.mandeep_singh.vitcomplaint.Modal;
 
 public class ProfileModel extends ProfileId {
-    private  String name, roomNo, phoneNo, block, imageUrl, studentId;
+    private  String name, roomNo, phoneNo, block, imageUrl;
 
     public String getRoomNo() {
         return roomNo;
@@ -23,9 +23,7 @@ public class ProfileModel extends ProfileId {
         return imageUrl;
     }
 
-    public String getStudentId() {
-        return studentId;
-    }
+
 
 }
 

@@ -146,7 +146,6 @@ public class ProfileFragmentWarden extends Fragment {
                     profileUrl = profileModel.getImageUrl();
                     block = profileModel.getBlock();
                     phoneNo = profileModel.getPhoneNo();
-                    wardenId = profileModel.getStudentId();
                     nameEditText.setText(name);
                     phoneNoEditText.setText(phoneNo);
 
@@ -172,7 +171,6 @@ public class ProfileFragmentWarden extends Fragment {
             ProfileMap.put("phoneNo", phoneNo);
             ProfileMap.put("block", block);
             ProfileMap.put("imageUrl", profileUrl);
-            ProfileMap.put("wardenId", wardenId);
             ProfileMap.put("time", FieldValue.serverTimestamp());
             if(filePath == null)
                 SaveToFirebase();

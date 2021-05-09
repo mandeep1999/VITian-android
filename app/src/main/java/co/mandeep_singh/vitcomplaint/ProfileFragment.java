@@ -132,7 +132,7 @@ public class ProfileFragment extends Fragment {
 
 
     private void fetchProfile() {
-        DocumentReference docRef = firestore.collection("profiles").document(studentId);
+        DocumentReference docRef = firestore.collection("profiles/students/profile").document(studentId);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -143,7 +143,6 @@ public class ProfileFragment extends Fragment {
                 profileUrl = profileModel.getImageUrl();
                 block = profileModel.getBlock();
                 phoneNo = profileModel.getPhoneNo();
-                studentId = profileModel.getStudentId();
 
                 nameEditText.setText(name);
                 roomNoEditText.setText(roomNo);
@@ -173,7 +172,6 @@ public class ProfileFragment extends Fragment {
             ProfileMap.put("roomNo", roomNo);
             ProfileMap.put("block", block);
             ProfileMap.put("imageUrl", profileUrl);
-            ProfileMap.put("studentId", studentId);
             ProfileMap.put("time", FieldValue.serverTimestamp());
             if(filePath == null)
             SaveToFirebase();

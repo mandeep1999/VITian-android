@@ -26,8 +26,8 @@
     <string name="reject">Reject</string>
     <string name="close">Close</string>
     <string name="notifications">Notifications</string>
-    <string name="students">Students</string>
     <string name="wall">Wall</string>
     <string name="phone_no">Phone No</string>
+    <string name="students">Students</string>
 
 </resources>

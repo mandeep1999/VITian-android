@@ -37,21 +37,18 @@ import co.mandeep_singh.vitcomplaint.Modal.StudentModel;
 public class StudentsFragmentWarden extends Fragment implements OnDialogCloseListener {
 
     private RecyclerView recyclerView;
-    ImageButton plusButton;
     View rootView;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private StudentsListAdapter adapter;
     private List<StudentModel> mList;
     private Query query;
     private ListenerRegistration listenerRegistration;
-    private String block ="L", roomNo = "202";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_home, container,false);
-        recyclerView = rootView.findViewById(R.id.home_list);
-        plusButton = (ImageButton)rootView.findViewById(R.id.plusButton);
+        rootView = inflater.inflate(R.layout.fragment_studentlist_warden, container,false);
+        recyclerView = rootView.findViewById(R.id.student_list_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         establishAddComplaint();
@@ -59,12 +56,6 @@ public class StudentsFragmentWarden extends Fragment implements OnDialogCloseLis
     }
 
     private void establishAddComplaint() {
-        plusButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddComplaint.newInstance().show(getFragmentManager(),AddComplaint.TAG);
-            }
-        });
         mList = new ArrayList<>();
         adapter = new StudentsListAdapter(StudentsFragmentWarden.this, mList);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new TouchHelperStudentList(adapter));

@@ -1,8 +1,12 @@
 package co.mandeep_singh.vitcomplaint.Auth;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -14,10 +18,15 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.HashMap;
 import java.util.Map;
-import co.mandeep_singh.vitcomplaint.Modal.EmailModel;
+
+import co.mandeep_singh.vitcomplaint.HomeActivity;
+import co.mandeep_singh.vitcomplaint.HomeActivityWarden;
+import co.mandeep_singh.vitcomplaint.MainActivity;
 import co.mandeep_singh.vitcomplaint.Modal.UserModel;
+import co.mandeep_singh.vitcomplaint.SplashActivity;
 
 
 public class Auth{
@@ -25,18 +34,11 @@ public class Auth{
     public String errorMessage = "";
     final FirebaseFirestore _firestore = FirebaseFirestore.getInstance();
     final FirebaseAuth _firebaseAuth = FirebaseAuth.getInstance();
-    FirebaseUser user;
-    public static String id = "";
+    public static FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    public static String id = user!=null ?  user.getUid() : null ;
 
     public String SignUp(String email, String password, boolean warden, Activity activity) {
         try {
-        final boolean[] ans = new boolean[1];
-        _firebaseAuth.signInAnonymously().addOnCompleteListener(activity, task -> {
-            user = _firebaseAuth.getCurrentUser();
-           ans[0] = checkEmail(email);  //check email is of warden if true then its of warden
-            user.delete();
-        });
-            if (warden == ans[0]) {
                 _firebaseAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -51,11 +53,7 @@ public class Auth{
                             }
                         });
                 return id;
-            }
-            else
-                {
-                errorMessage = "You are not authorized";
-            }
+
         }
         catch (Exception e){
             errorMessage = e.getMessage();
@@ -64,32 +62,19 @@ public class Auth{
     }
 
     public String SignIn(String email, String password, boolean warden, Activity activity) {
-        _firebaseAuth.signInAnonymously();
-        user = _firebaseAuth.getCurrentUser();
-        boolean ans = checkAdmin(email); //check email is of warden if true then its of warden
-        user.delete();
         try {
-
-            if (warden == ans) {
                 _firebaseAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener( activity, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     FirebaseUser user = _firebaseAuth.getCurrentUser();
-                                    user.sendEmailVerification();
-                                    setUser(warden, email, user.getUid());
                                     id = user.getUid();
                                     errorMessage = "";
                                 }
                             }
                         });
                 return id;
-            }
-            else
-                {
-                errorMessage = "You are not authorized";
-            }
         }
         catch (Exception e){
             errorMessage = e.getMessage();
@@ -98,11 +83,13 @@ public class Auth{
     }
 
 
-    void signOut(){
+    public void signOut(){
         _firebaseAuth.signOut();
+        id = null;
+        user = null;
     }
 
-    void resetPassword(String email){
+    public void resetPassword(String email){
         _firebaseAuth.sendPasswordResetEmail(email);
     }
 
@@ -120,39 +107,44 @@ public class Auth{
 
     }
 
-    boolean checkAdmin(String email){
-        final boolean[] returnValue = {false};
-        _firestore.collection("users").addSnapshotListener(new EventListener<QuerySnapshot>() {
+    public void CheckWardenOrStudent(SplashActivity splashActivity){
+        final int[] returnValue = new int[1];
+        returnValue[0] = 0;
+        _firestore.collection("users")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                for (DocumentChange documentChange : value.getDocumentChanges()) {
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
                     if (documentChange.getType() == DocumentChange.Type.ADDED) {
                         UserModel userModel = documentChange.getDocument().toObject(UserModel.class);
-                        if (email.trim().equals(userModel.getEmail().trim())) {
-                            returnValue[0] = userModel.isWarden();
+                        System.out.println(userModel.getUid() + " +++++++++++ " + id);
+                        if(userModel.getUid().equals(id)){
+                            returnValue[0] = userModel.isWarden() ? 1 : -1;
                             break;
                         }
                     }
                 }
             }
         });
-        return  returnValue[0];
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(user != null ){
+                    if(returnValue[0] == 0)
+                        splashActivity.startActivity(new Intent(splashActivity, MainActivity.class));
+                    if(returnValue[0] == 1)
+                        splashActivity.startActivity(new Intent(splashActivity, HomeActivityWarden.class));
+                    if(returnValue[0] == -1)
+                        splashActivity.startActivity(new Intent(splashActivity, HomeActivity.class));
+                }
+                else{
+                    splashActivity.startActivity(new Intent(splashActivity,MainActivity.class));
+                }
+                splashActivity.finish();
+            }
+        },4000);
+
     }
 
-    public  boolean  checkEmail(@org.jetbrains.annotations.NotNull String email) {
-        final Boolean returnValue[] = {false};
-        _firestore.collection("emails").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                for (DocumentChange documentChange : value.getDocumentChanges()) {
-                    if (documentChange.getType() == DocumentChange.Type.ADDED) {
-                        EmailModel emailModel = documentChange.getDocument().toObject(EmailModel.class);
-                        returnValue[0] = emailModel.getEmail().trim().equals(email.trim());
-                        break;
-                    }
-                }
-            }
-        });
-        return  returnValue[0];
-    }
 }

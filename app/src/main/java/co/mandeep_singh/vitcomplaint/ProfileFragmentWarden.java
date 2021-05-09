@@ -36,6 +36,7 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.Map;
 
+import co.mandeep_singh.vitcomplaint.Auth.Auth;
 import co.mandeep_singh.vitcomplaint.Modal.ProfileModel;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -47,7 +48,7 @@ public class ProfileFragmentWarden extends Fragment {
     Spinner spinner;
     EditText nameEditText, phoneNoEditText, roomNoEditText;
     CircleImageView profilePhotoStudent;
-    ImageButton penStudent;
+    ImageButton penStudent, logOut;
     Button updateButton;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageReference = storage.getReference();
@@ -69,6 +70,8 @@ public class ProfileFragmentWarden extends Fragment {
         profilePhotoStudent = rootView.findViewById(R.id.profile_photo_warden);
         penStudent = rootView.findViewById(R.id.editPen_warden);
         updateButton = rootView.findViewById(R.id.update_warden);
+        logOut = rootView.findViewById(R.id.logout_warden);
+
         establishSpinner();
         fetchProfile();
         updateButton.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +84,17 @@ public class ProfileFragmentWarden extends Fragment {
             @Override
             public void onClick(View v) {
                 SelectImage();
+            }
+        });
+
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Auth auth = new Auth();
+                auth.signOut();
+                Intent i = new Intent(getActivity(), MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
             }
         });
 

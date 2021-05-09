@@ -2,7 +2,9 @@ package co.mandeep_singh.vitcomplaint;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -88,30 +90,15 @@ public class StudentLogin extends AppCompatActivity {
                 if (button.getText().toString().equals("Sign up")){
                     if(!email.getText().toString().equals("") && !password.getText().toString().equals("") && Patterns.EMAIL_ADDRESS.matcher(email.getText().toString().trim()).matches()){
                         auth.SignUp(email.getText().toString(),password.getText().toString(),false, StudentLogin.this);
-                        if(auth.errorMessage.equals("") && auth.id !=null){
-                            Toast.makeText(getApplicationContext(),"Please check your email",Toast.LENGTH_LONG).show();
-                        }
-                        else {
-                            Toast.makeText(getApplicationContext(),auth.errorMessage,Toast.LENGTH_LONG).show();
-                        }
                     }
                 }
                 else {
                     if(!email.getText().toString().equals("") && !password.getText().toString().equals("")  && Patterns.EMAIL_ADDRESS.matcher(email.getText().toString().trim()).matches()){
                         auth.SignIn(email.getText().toString(),password.getText().toString(),false, StudentLogin.this);
-                        if(auth.errorMessage.equals("") && auth.id !=null){
-                            Intent i = new Intent(StudentLogin.this, HomeActivity.class);
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(i);
-                        }
-                        else {
-                            Toast.makeText(getApplicationContext(),auth.errorMessage,Toast.LENGTH_LONG).show();
-                        }
                     }
                 }
             }
         });
     }
-
 
 }

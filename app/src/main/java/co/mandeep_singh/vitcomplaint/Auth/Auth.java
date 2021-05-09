@@ -3,6 +3,7 @@ package co.mandeep_singh.vitcomplaint.Auth;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,49 +38,63 @@ public class Auth{
     public static FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     public static String id = user!=null ?  user.getUid() : null ;
 
-    public String SignUp(String email, String password, boolean warden, Activity activity) {
+    public void SignUp(String email, String password, boolean warden, Activity activity) {
         try {
                 _firebaseAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    FirebaseUser user = _firebaseAuth.getCurrentUser();
+                                    user = _firebaseAuth.getCurrentUser();
                                     user.sendEmailVerification();
                                     setUser(warden, email, user.getUid());
                                     id = user.getUid();
-                                    errorMessage = "";
+                                    Toast.makeText(activity, "Please check your email" ,Toast.LENGTH_LONG).show();
+                                }
+                                else {
+                                    Toast.makeText(activity, "Something went wrong" ,Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
-                return id;
 
         }
         catch (Exception e){
-            errorMessage = e.getMessage();
+            Toast.makeText(activity, e.getMessage() ,Toast.LENGTH_LONG).show();
         }
-    return errorMessage;
     }
 
-    public String SignIn(String email, String password, boolean warden, Activity activity) {
+    public void SignIn(String email, String password, boolean warden, Activity activity) {
         try {
                 _firebaseAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener( activity, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    FirebaseUser user = _firebaseAuth.getCurrentUser();
+                                    user = _firebaseAuth.getCurrentUser();
                                     id = user.getUid();
-                                    errorMessage = "";
+                                    if(user.isEmailVerified()){
+                                    Intent i;
+                                    if (warden) {
+                                        i = new Intent(activity, HomeActivityWarden.class);
+                                    } else {
+                                        i = new Intent(activity, HomeActivity.class);
+                                    }
+                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    activity.startActivity(i);
+                                }else {
+                                        Toast.makeText(activity, "Verify your email" ,Toast.LENGTH_LONG).show();
+                                        user.sendEmailVerification();
+                                    }
+                                }
+                                else {
+                                    Toast.makeText(activity, "Something went wrong" ,Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
-                return id;
         }
         catch (Exception e){
-            errorMessage = e.getMessage();
+            Toast.makeText(activity, e.getMessage() ,Toast.LENGTH_LONG).show();
         }
-        return errorMessage;
     }
 
 
@@ -117,7 +132,6 @@ public class Auth{
                 for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
                     if (documentChange.getType() == DocumentChange.Type.ADDED) {
                         UserModel userModel = documentChange.getDocument().toObject(UserModel.class);
-                        System.out.println(userModel.getUid() + " +++++++++++ " + id);
                         if(userModel.getUid().equals(id)){
                             returnValue[0] = userModel.isWarden() ? 1 : -1;
                             break;
@@ -130,7 +144,7 @@ public class Auth{
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(user != null ){
+                if(user != null && user.isEmailVerified()){
                     if(returnValue[0] == 0)
                         splashActivity.startActivity(new Intent(splashActivity, MainActivity.class));
                     if(returnValue[0] == 1)

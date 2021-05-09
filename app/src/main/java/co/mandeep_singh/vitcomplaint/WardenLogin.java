@@ -90,27 +90,13 @@ public class WardenLogin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (button.getText().toString().equals("Sign up")){
-                if(!email.getText().toString().equals("") && !password.getText().toString().equals("") && Patterns.EMAIL_ADDRESS.matcher(email.getText().toString().trim()).matches()){
-                   auth.SignUp(email.getText().toString().trim(),password.getText().toString().trim(),true, WardenLogin.this);
-                   if(auth.errorMessage.equals("") && auth.id !=null){
-                       Toast.makeText(getApplicationContext(),"Please check your email",Toast.LENGTH_LONG).show();
-                   }
-                   else {
-                       Toast.makeText(getApplicationContext(),auth.errorMessage,Toast.LENGTH_LONG).show();
-                   }
-                }
+                    if(!email.getText().toString().equals("") && !password.getText().toString().equals("") && Patterns.EMAIL_ADDRESS.matcher(email.getText().toString().trim()).matches()){
+                        auth.SignUp(email.getText().toString(),password.getText().toString(),true, WardenLogin.this);
+                    }
                 }
                 else {
-                    if(!email.getText().toString().equals("") && !password.getText().toString().equals("") && Patterns.EMAIL_ADDRESS.matcher(email.getText().toString().trim()).matches()){
-                        auth.SignIn(email.getText().toString().trim(),password.getText().toString().trim(),true, WardenLogin.this);
-                        if(auth.errorMessage.equals("") && auth.id !=null){
-                            Intent i = new Intent(WardenLogin.this, HomeActivityWarden.class);
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(i);
-                        }
-                        else {
-                            Toast.makeText(getApplicationContext(),auth.errorMessage,Toast.LENGTH_LONG).show();
-                        }
+                    if(!email.getText().toString().equals("") && !password.getText().toString().equals("")  && Patterns.EMAIL_ADDRESS.matcher(email.getText().toString().trim()).matches()){
+                        auth.SignIn(email.getText().toString(),password.getText().toString(),true, WardenLogin.this);
                     }
                 }
             }

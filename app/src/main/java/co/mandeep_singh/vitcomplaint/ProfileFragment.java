@@ -1,8 +1,10 @@
 package co.mandeep_singh.vitcomplaint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -29,6 +32,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +56,7 @@ public class ProfileFragment extends Fragment {
     private Context context;
     UploadTask uploadTask;
     private  Uri filePath;
+    ProgressBar progressBar;
     ArrayAdapter<String> blockArray;
     private final int PICK_IMAGE_REQUEST = 22;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -67,6 +73,7 @@ public class ProfileFragment extends Fragment {
         profilePhotoStudent = rootView.findViewById(R.id.profile_photo_student);
         penStudent = rootView.findViewById(R.id.editPen_student);
         updateButton = rootView.findViewById(R.id.update_student);
+        progressBar = rootView.findViewById(R.id.progressBar_student);
         logOut = rootView.findViewById(R.id.logout);
         establishSpinner();
         fetchProfile();
@@ -110,7 +117,7 @@ public class ProfileFragment extends Fragment {
                 PICK_IMAGE_REQUEST);
     }
     private void uploadImage()
-    {
+    {   progressBar.setVisibility(View.VISIBLE);
         if (filePath != null) {
             StorageReference ref
                     = storageReference
@@ -134,8 +141,10 @@ public class ProfileFragment extends Fragment {
                         Uri downloadUri = task.getResult();
                         profileUrl = downloadUri.toString();
                         ProfileMap.put("imageUrl", profileUrl);
+                        progressBar.setVisibility(View.INVISIBLE);
                         SaveToFirebase();
                     } else {
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(context,"Update Failed", Toast.LENGTH_LONG).show();
                     }
                 }
@@ -181,6 +190,10 @@ public class ProfileFragment extends Fragment {
             phoneNo = phoneNoEditText.getText().toString();
             roomNo = roomNoEditText.getText().toString();
             block = spinner.getSelectedItem().toString();
+            if(phoneNo.length()!=10){
+                Toast.makeText(getActivity(), "Phone no should be 10 digits", Toast.LENGTH_LONG).show();
+            }
+            else {
             ProfileMap.put("name", name);
             ProfileMap.put("phoneNo", phoneNo);
             ProfileMap.put("roomNo", roomNo);
@@ -193,19 +206,23 @@ public class ProfileFragment extends Fragment {
                 uploadImage();
             }
         }
+        }
     }
 
     private void SaveToFirebase() {
+        progressBar.setVisibility(View.VISIBLE);
         firestore.collection(  "profiles/students/profile")
                 .document(studentId).set(ProfileMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(context,"Profile Updated",Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -249,6 +266,22 @@ public class ProfileFragment extends Fragment {
 
             // Get the Uri of data
             filePath = data.getData();
+            try {
+
+                // Setting image on image view using Bitmap
+                Bitmap bitmap = MediaStore
+                        .Images
+                        .Media
+                        .getBitmap(
+                                getActivity().getContentResolver(),
+                                filePath);
+                profilePhotoStudent.setImageBitmap(bitmap);
+            }
+
+            catch (IOException e) {
+                // Log the exception
+                e.printStackTrace();
+            }
 
         }
     }

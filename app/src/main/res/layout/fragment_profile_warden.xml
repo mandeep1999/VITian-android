@@ -84,7 +84,8 @@
         android:drawablePadding="7dp"
         android:ems="10"
         android:hint="@string/phone_no"
-        android:inputType="textPersonName"
+        android:inputType="phone"
+        android:maxLength="10"
         android:padding="7dp"
         android:paddingStart="10dp"
         android:textSize="20sp"
@@ -137,4 +138,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent" />
+    <ProgressBar
+        android:id="@+id/progressBar_warden"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

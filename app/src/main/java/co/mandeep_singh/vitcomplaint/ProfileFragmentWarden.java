@@ -2,8 +2,10 @@ package co.mandeep_singh.vitcomplaint;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -33,6 +36,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,6 +57,7 @@ public class ProfileFragmentWarden extends Fragment {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageReference = storage.getReference();
     private Context context;
+    ProgressBar progressBar;
     UploadTask uploadTask;
     private Uri filePath;
     ArrayAdapter<String> blockArray;
@@ -71,6 +76,7 @@ public class ProfileFragmentWarden extends Fragment {
         penStudent = rootView.findViewById(R.id.editPen_warden);
         updateButton = rootView.findViewById(R.id.update_warden);
         logOut = rootView.findViewById(R.id.logout_warden);
+        progressBar = rootView.findViewById(R.id.progressBar_warden);
 
         establishSpinner();
         fetchProfile();
@@ -115,7 +121,7 @@ public class ProfileFragmentWarden extends Fragment {
                 PICK_IMAGE_REQUEST);
     }
     private void uploadImage()
-    {
+    {   progressBar.setVisibility(View.VISIBLE);
         if (filePath != null) {
             StorageReference ref
                     = storageReference
@@ -139,8 +145,10 @@ public class ProfileFragmentWarden extends Fragment {
                         Uri downloadUri = task.getResult();
                         profileUrl = downloadUri.toString();
                         ProfileMap.put("imageUrl", profileUrl);
+                        progressBar.setVisibility(View.INVISIBLE);
                         SaveToFirebase();
                     } else {
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(context,"Update Failed", Toast.LENGTH_LONG).show();
                     }
                 }
@@ -179,6 +187,7 @@ public class ProfileFragmentWarden extends Fragment {
 
 
     private void updateProfile() {
+
         if(!nameEditText.getText().toString().equals("") && !phoneNoEditText.getText().toString().equals("") ){
             name = nameEditText.getText().toString();
             phoneNo = phoneNoEditText.getText().toString();
@@ -197,16 +206,19 @@ public class ProfileFragmentWarden extends Fragment {
     }
 
     private void SaveToFirebase() {
+        progressBar.setVisibility(View.VISIBLE);
         firestore.collection(  "profiles/warden/profile")
                 .document(wardenId).set(ProfileMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(context,"Profile Updated",Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -250,6 +262,22 @@ public class ProfileFragmentWarden extends Fragment {
 
             // Get the Uri of data
             filePath = data.getData();
+            try {
+
+                // Setting image on image view using Bitmap
+                Bitmap bitmap = MediaStore
+                        .Images
+                        .Media
+                        .getBitmap(
+                                getActivity().getContentResolver(),
+                                filePath);
+                profilePhotoStudent.setImageBitmap(bitmap);
+            }
+
+            catch (IOException e) {
+                // Log the exception
+                e.printStackTrace();
+            }
 
         }
     }

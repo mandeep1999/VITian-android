@@ -90,20 +90,40 @@ public class StudentLogin extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (button.getText().toString().equals("Sign up")){
-                    if(!email.getText().toString().equals("") && !password.getText().toString().equals("") && Patterns.EMAIL_ADDRESS.matcher(email.getText().toString().trim()).matches()){
-                        progressBar.setVisibility(View.VISIBLE);
-                        auth.SignUp(email.getText().toString(),password.getText().toString(),false, StudentLogin.this, progressBar);
+                boolean pass = StudentEmail(email);
+                String emailText = email.getText().toString();
+                String passwordText = password.getText().toString();
+                if(pass && !(passwordText.isEmpty() || passwordText.equals(""))){
+                    if (button.getText().toString().equals("Sign up")) {
+                        if (!emailText.equals("") && !passwordText.equals("")) {
+                            progressBar.setVisibility(View.VISIBLE);
+                            auth.SignUp(emailText, passwordText, false, StudentLogin.this, progressBar);
+                        }
+                    } else {
+                        if (!emailText.equals("") && !passwordText.equals("")) {
+                            progressBar.setVisibility(View.VISIBLE);
+                            auth.SignIn(emailText, passwordText, false, StudentLogin.this, progressBar);
+                        }
                     }
                 }
+                else if(pass && (passwordText.isEmpty() || passwordText.equals("") )){
+                    Toast.makeText(getApplicationContext(), "Password cannot be empty", Toast.LENGTH_LONG).show();
+                }
+                else if(!pass){
+                    Toast.makeText(getApplicationContext(), "There is a problem with your email", Toast.LENGTH_LONG).show();
+                }
                 else {
-                    if(!email.getText().toString().equals("") && !password.getText().toString().equals("")  && Patterns.EMAIL_ADDRESS.matcher(email.getText().toString().trim()).matches()){
-                        progressBar.setVisibility(View.VISIBLE);
-                        auth.SignIn(email.getText().toString(),password.getText().toString(),false, StudentLogin.this, progressBar);
-                    }
+                    Toast.makeText(getApplicationContext(), "I smell something weird", Toast.LENGTH_LONG).show();
                 }
             }
         });
+    }
+
+    private boolean StudentEmail(EditText email){
+        String emailText = email.getText().toString().trim();
+        boolean first = Patterns.EMAIL_ADDRESS.matcher(emailText).matches();
+        boolean second = emailText.endsWith("@vitstudent.ac.in") || emailText.equals("mandy.sgh.99@gmail.com");
+        return  first && second;
     }
 
 }

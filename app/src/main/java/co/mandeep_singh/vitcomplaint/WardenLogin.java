@@ -89,20 +89,40 @@ public class WardenLogin extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (button.getText().toString().equals("Sign up")){
-                    if(!email.getText().toString().equals("") && !password.getText().toString().equals("") && Patterns.EMAIL_ADDRESS.matcher(email.getText().toString().trim()).matches()){
+                boolean pass = WardenEmail(email);
+                String emailText = email.getText().toString();
+                String passwordText = password.getText().toString();
+                if(pass && !(passwordText.isEmpty() || passwordText.equals(""))){
+                if (button.getText().toString().equals("Sign up")) {
+                    if (!emailText.equals("") && !passwordText.equals("")) {
                         progressBar.setVisibility(View.VISIBLE);
-                        auth.SignUp(email.getText().toString(),password.getText().toString(),true, WardenLogin.this,progressBar);
+                        auth.SignUp(emailText, passwordText, true, WardenLogin.this, progressBar);
                     }
-                }
-                else {
-                    if(!email.getText().toString().equals("") && !password.getText().toString().equals("")  && Patterns.EMAIL_ADDRESS.matcher(email.getText().toString().trim()).matches()){
+                } else {
+                    if (!emailText.equals("") && !passwordText.equals("")) {
                         progressBar.setVisibility(View.VISIBLE);
-                        auth.SignIn(email.getText().toString(),password.getText().toString(),true, WardenLogin.this,progressBar);
+                        auth.SignIn(emailText, passwordText, true, WardenLogin.this, progressBar);
                     }
                 }
             }
+                else if(pass && (passwordText.isEmpty() || passwordText.equals("") )){
+                    Toast.makeText(getApplicationContext(), "Password cannot be empty", Toast.LENGTH_LONG).show();
+                }
+                else if(!pass){
+                    Toast.makeText(getApplicationContext(), "There is a problem with your email", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "I smell something weird", Toast.LENGTH_LONG).show();
+                }
+            }
         });
+    }
+
+    private boolean WardenEmail(EditText email){
+        String emailText = email.getText().toString().trim();
+        boolean first = Patterns.EMAIL_ADDRESS.matcher(emailText).matches();
+        boolean second = emailText.endsWith("@vit.ac.in") || emailText.equals("mandeep.99@yahoo.com");
+        return  first && second;
     }
 
 

@@ -37,7 +37,7 @@ public class Auth{
     final FirebaseAuth _firebaseAuth = FirebaseAuth.getInstance();
     public static FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     public static String id = user!=null ?  user.getUid() : null ;
-    public static boolean warden = false;
+    public static int wardenAuth = 0;
     public static String block = null;
     public static  String roomNo = null;
 
@@ -55,7 +55,7 @@ public class Auth{
                                     Toast.makeText(activity, "Please check your email" ,Toast.LENGTH_LONG).show();
                                 }
                                 else {
-                                    Toast.makeText(activity, "Something went wrong" ,Toast.LENGTH_LONG).show();
+                                    Toast.makeText(activity, task.getException().getMessage() ,Toast.LENGTH_LONG).show();
                                 }
                                 progressBar.setVisibility(View.INVISIBLE);
                             }
@@ -82,8 +82,10 @@ public class Auth{
                                     Intent i;
                                     if (warden) {
                                         i = new Intent(activity, HomeActivityWarden.class);
+                                        wardenAuth = 1;
                                     } else {
                                         i = new Intent(activity, HomeActivity.class);
+                                        wardenAuth = -1;
                                     }
                                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     activity.startActivity(i);
@@ -93,7 +95,7 @@ public class Auth{
                                     }
                                 }
                                 else {
-                                    Toast.makeText(activity, "Something went wrong" ,Toast.LENGTH_LONG).show();
+                                    Toast.makeText(activity, task.getException().getMessage() ,Toast.LENGTH_LONG).show();
                                 }
                                 progressBar.setVisibility(View.INVISIBLE);
                             }
@@ -110,7 +112,7 @@ public class Auth{
         _firebaseAuth.signOut();
         id = null;
         user = null;
-        warden = false;
+        wardenAuth = 0;
         block = null;
         roomNo = null;
     }
@@ -156,19 +158,22 @@ public class Auth{
             @Override
             public void run() {
                 if(user != null && user.isEmailVerified()){
-                    if(returnValue[0] == 0)
+                    if(returnValue[0] == 0){
                         splashActivity.startActivity(new Intent(splashActivity, MainActivity.class));
+                        wardenAuth = 0;
+                    }
                     if(returnValue[0] == 1){
-                        warden = true;
+                        wardenAuth = 1;
                         splashActivity.startActivity(new Intent(splashActivity, HomeActivityWarden.class));
                     }
                     if(returnValue[0] == -1){
-                        warden = false;
+                        wardenAuth = -1;
                         splashActivity.startActivity(new Intent(splashActivity, HomeActivity.class));
                     }
                 }
                 else{
                     splashActivity.startActivity(new Intent(splashActivity,MainActivity.class));
+                    wardenAuth = 0;
                 }
                 splashActivity.finish();
             }

@@ -91,7 +91,7 @@ public class HomeListAdapterWarden extends RecyclerView.Adapter<HomeListAdapterW
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String temp = parent.getItemAtPosition(position).toString();
-                    firestore.collection("complaints/"+ block + "/" + roomNo).document(homeModel.HomeId).update("urgent",temp);
+                    firestore.collection("complaints/" + block +"/complaints").document(homeModel.HomeId).update("urgent",temp);
             }
 
             @Override
@@ -103,7 +103,7 @@ public class HomeListAdapterWarden extends RecyclerView.Adapter<HomeListAdapterW
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String temp = parent.getItemAtPosition(position).toString();
-                    firestore.collection("complaints/"+ block + "/" + roomNo).document(homeModel.HomeId).update("status",temp);
+                    firestore.collection("complaints/" + block +"/complaints").document(homeModel.HomeId).update("status",temp);
             }
 
             @Override

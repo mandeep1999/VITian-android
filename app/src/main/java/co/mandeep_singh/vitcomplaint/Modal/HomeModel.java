@@ -1,7 +1,7 @@
 package co.mandeep_singh.vitcomplaint.Modal;
 
 public class HomeModel extends HomeId{
-    private String complaintType, block, remark, status, urgent, complaintPhoto, roomNo;
+    private String complaintType, block, remark, status, urgent, image, roomNo;
 
     public String getComplaintType() {
         return complaintType;
@@ -23,8 +23,8 @@ public class HomeModel extends HomeId{
         return urgent;
     }
 
-    public String getComplaintPhoto() {
-        return complaintPhoto;
+    public String getImage() {
+        return image;
     }
 
     public String getRoomNo() {

@@ -1,0 +1,29 @@
+package co.mandeep_singh.vitcomplaint.Modal;
+
+public class ProfileModel extends ProfileId {
+    private  String name, roomNo, phoneNo, block, imageUrl;
+
+    public String getRoomNo() {
+        return roomNo;
+    }
+
+    public String getBlock() {
+        return block;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPhoneNo() {
+        return phoneNo;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+
+
+}
+

@@ -2,19 +2,28 @@ package co.mandeep_singh.vitcomplaint;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import co.mandeep_singh.vitcomplaint.Auth.Auth;
 
 public class WardenLogin extends AppCompatActivity {
     Button button;
     EditText email, password;
-    TextView newApp;
+    TextView newApp, resetPassword;
+    Auth auth = new Auth();
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,12 +31,36 @@ public class WardenLogin extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_warden_login);
-        button = findViewById(R.id.button);
-        email = findViewById(R.id.Email);
-        password = findViewById(R.id.Password);
-        newApp = findViewById(R.id.textView2);
+        button = findViewById(R.id.button_warden);
+        email = findViewById(R.id.Email_warden);
+        password = findViewById(R.id.password_warden);
+        newApp = findViewById(R.id.new_warden);
+        resetPassword = findViewById(R.id.resetPassword_warden);
+        progressBar = findViewById(R.id.progressBar_warden_login);
         addButtonListener();
         addNewAppListener();
+        resetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createDialogBox();
+            }
+        });
+    }
+    private void createDialogBox(){
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(WardenLogin.this);
+        final EditText input = new EditText(getApplicationContext());
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        builder.setTitle("Enter your email to reset password").setPositiveButton("Send", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                auth.resetPassword(input.getText().toString());
+                Toast.makeText(getApplicationContext(), "Please check your email", Toast.LENGTH_LONG).show();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
 
     private void addBackLogin() {
@@ -56,11 +89,40 @@ public class WardenLogin extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), email.getText() + " " + password.getText(), Toast.LENGTH_LONG).show();
-                Intent i = new Intent(getApplicationContext(), MyListAdapter2.HomeActivity.class);
-                startActivity(i);
+                boolean pass = WardenEmail(email);
+                String emailText = email.getText().toString();
+                String passwordText = password.getText().toString();
+                if(pass && !(passwordText.isEmpty() || passwordText.equals(""))){
+                if (button.getText().toString().equals("Sign up")) {
+                    if (!emailText.equals("") && !passwordText.equals("")) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        auth.SignUp(emailText, passwordText, true, WardenLogin.this, progressBar);
+                    }
+                } else {
+                    if (!emailText.equals("") && !passwordText.equals("")) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        auth.SignIn(emailText, passwordText, true, WardenLogin.this, progressBar);
+                    }
+                }
+            }
+                else if(pass && (passwordText.isEmpty() || passwordText.equals("") )){
+                    Toast.makeText(getApplicationContext(), "Password cannot be empty", Toast.LENGTH_LONG).show();
+                }
+                else if(!pass){
+                    Toast.makeText(getApplicationContext(), "There is a problem with your email", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "I smell something weird", Toast.LENGTH_LONG).show();
+                }
             }
         });
+    }
+
+    private boolean WardenEmail(EditText email){
+        String emailText = email.getText().toString().trim();
+        boolean first = Patterns.EMAIL_ADDRESS.matcher(emailText).matches();
+        boolean second = emailText.endsWith("@vit.ac.in") || emailText.equals("mandeep.99@yahoo.com");
+        return  first && second;
     }
 
 

@@ -1,6 +1,5 @@
 package co.mandeep_singh.vitcomplaint.Adapter;
-import co.mandeep_singh.vitcomplaint.HomeFragement;
-import co.mandeep_singh.vitcomplaint.R;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,21 +9,27 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-import co.mandeep_singh.vitcomplaint.Modal.HomeModel;
 
-public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.MyViewHolder> {
+import co.mandeep_singh.vitcomplaint.HomeFragement;
+import co.mandeep_singh.vitcomplaint.HomeFragementWarden;
+import co.mandeep_singh.vitcomplaint.Modal.HomeModel;
+import co.mandeep_singh.vitcomplaint.R;
+
+public class HomeListAdapterWarden extends RecyclerView.Adapter<HomeListAdapterWarden.MyViewHolder> {
 
     private List<HomeModel> homeList;
-    private HomeFragement activity;
+    private HomeFragementWarden activity;
     private FirebaseFirestore firestore;
 
-    public HomeListAdapter(HomeFragement homeActivity, List<HomeModel> homeList){
+    public HomeListAdapterWarden(HomeFragementWarden homeActivity, List<HomeModel> homeList){
         this.homeList = homeList;
         activity = homeActivity;
     }
@@ -38,7 +43,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.MyView
 
     public void deleteTask(int position){
         HomeModel homeModel  = homeList.get(position);
-        String temp = "complaints/" + homeModel.getBlock() + "/complaints";
+        String temp = "complaints/" + homeModel.getBlock() + "/" + homeModel.getRoomNo();
         firestore.collection(temp).document(homeModel.HomeId).delete();
         homeList.remove(position);
         notifyItemRemoved(position);
@@ -114,6 +119,8 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.MyView
     public int getItemCount() {
         return homeList.size();
     }
+
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         Spinner status, urgent;

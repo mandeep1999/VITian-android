@@ -30,7 +30,7 @@
         app:srcCompat="@drawable/student" />
 
     <EditText
-    android:id="@+id/Email"
+    android:id="@+id/Email_student"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
@@ -45,12 +45,12 @@
         android:paddingStart="10dp"
         android:drawableTint="@color/indigo"
     android:inputType="textEmailAddress"
-    app:layout_constraintBottom_toTopOf="@+id/Password"
+    app:layout_constraintBottom_toTopOf="@+id/Password_student"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent" />
 
 <EditText
-    android:id="@+id/Password"
+    android:id="@+id/Password_student"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
@@ -59,7 +59,7 @@
     android:drawableStart="@android:drawable/ic_lock_lock"
     android:hint="@string/password"
     android:inputType="textPassword"
-    app:layout_constraintBottom_toTopOf="@+id/textView2"
+    app:layout_constraintBottom_toTopOf="@+id/new_student"
     android:background="@drawable/rounded_border_edittext"
     android:padding="7dp"
     android:textSize="22sp"
@@ -71,7 +71,7 @@
     app:layout_constraintStart_toStartOf="parent" />
 
 <Button
-    android:id="@+id/button"
+    android:id="@+id/button_student"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginBottom="64dp"
@@ -85,24 +85,37 @@
     app:layout_constraintStart_toStartOf="parent" />
 
 <TextView
-    android:id="@+id/textView2"
+    android:id="@+id/new_student"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
     android:layout_marginBottom="24dp"
     android:text="@string/new_to_our_app"
-    app:layout_constraintBottom_toTopOf="@+id/button"
+    app:layout_constraintBottom_toTopOf="@+id/button_student"
     app:layout_constraintStart_toStartOf="parent" />
 
 <TextView
-    android:id="@+id/textView3"
+    android:id="@+id/resetPassword_Student"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginEnd="16dp"
     android:layout_marginBottom="24dp"
     android:text="@string/forgot_password"
-    app:layout_constraintBottom_toTopOf="@+id/button"
+    app:layout_constraintBottom_toTopOf="@+id/button_student"
     app:layout_constraintEnd_toEndOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_student_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleLarge"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="invisible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

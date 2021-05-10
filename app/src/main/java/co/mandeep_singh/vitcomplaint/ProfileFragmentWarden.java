@@ -1,4 +1,5 @@
 package co.mandeep_singh.vitcomplaint;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,9 +14,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,6 +32,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,9 +42,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragmentWarden extends Fragment {
     String[] Blocks = { "A Block", "B Block", "C Block", "D Block", "E Block"};
-    String name, roomNo, phoneNo, block, profileUrl, studentId = Auth.id;
+    String name, phoneNo, block, profileUrl, wardenId = Auth.id;
     Spinner spinner;
     EditText nameEditText, phoneNoEditText, roomNoEditText;
     CircleImageView profilePhotoStudent;
@@ -50,7 +54,7 @@ public class ProfileFragment extends Fragment {
     StorageReference storageReference = storage.getReference();
     private Context context;
     UploadTask uploadTask;
-    private  Uri filePath;
+    private Uri filePath;
     ArrayAdapter<String> blockArray;
     private final int PICK_IMAGE_REQUEST = 22;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -59,15 +63,15 @@ public class ProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_profile, container,false);
-        spinner = rootView.findViewById(R.id.block_spinner_student);
-        nameEditText = rootView.findViewById(R.id.person_name_student);
-        phoneNoEditText = rootView.findViewById(R.id.phone_no_student);
-        roomNoEditText = rootView.findViewById(R.id.room_no_student);
-        profilePhotoStudent = rootView.findViewById(R.id.profile_photo_student);
-        penStudent = rootView.findViewById(R.id.editPen_student);
-        updateButton = rootView.findViewById(R.id.update_student);
-        logOut = rootView.findViewById(R.id.logout);
+        View rootView = inflater.inflate(R.layout.fragment_profile_warden, container,false);
+        spinner = rootView.findViewById(R.id.block_spinner_warden);
+        nameEditText = rootView.findViewById(R.id.person_name_warden);
+        phoneNoEditText = rootView.findViewById(R.id.phone_no_warden);
+        profilePhotoStudent = rootView.findViewById(R.id.profile_photo_warden);
+        penStudent = rootView.findViewById(R.id.editPen_warden);
+        updateButton = rootView.findViewById(R.id.update_warden);
+        logOut = rootView.findViewById(R.id.logout_warden);
+
         establishSpinner();
         fetchProfile();
         updateButton.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +86,7 @@ public class ProfileFragment extends Fragment {
                 SelectImage();
             }
         });
+
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,8 +120,8 @@ public class ProfileFragment extends Fragment {
             StorageReference ref
                     = storageReference
                     .child(
-                            "images/profiles/student"
-                                    + studentId);
+                            "images/profiles/warden"
+                                    + wardenId);
             //error
             uploadTask = ref.putFile(filePath);
             Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -145,50 +150,46 @@ public class ProfileFragment extends Fragment {
 
 
     private void fetchProfile() {
-        DocumentReference docRef = firestore.collection("profiles/students/profile").document(studentId);
+        DocumentReference docRef = firestore.collection("profiles/warden/profile").document(wardenId);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.toObject(ProfileModel.class) != null){
-                ProfileModel profileModel = documentSnapshot.toObject(ProfileModel.class).withId(studentId);
-                name = profileModel.getName();
-                roomNo = profileModel.getRoomNo();
-                profileUrl = profileModel.getImageUrl();
-                block = profileModel.getBlock();
-                phoneNo = profileModel.getPhoneNo();
-                nameEditText.setText(name);
-                roomNoEditText.setText(roomNo);
-                phoneNoEditText.setText(phoneNo);
-                Auth.block = block;
-                Auth.roomNo = roomNo;
+                    ProfileModel profileModel = documentSnapshot.toObject(ProfileModel.class).withId(wardenId);
+                    name = profileModel.getName();
+                    profileUrl = profileModel.getImageUrl();
+                    block = profileModel.getBlock();
+                    phoneNo = profileModel.getPhoneNo();
+                    nameEditText.setText(name);
+                    phoneNoEditText.setText(phoneNo);
 
-                if(profileUrl!= null){
+                    Auth.block = block;
+
+                    if(profileUrl!= null){
                         Picasso.with(context).load(profileUrl).into(profilePhotoStudent);
+                    }
+                    if(block != null){
+                        int spinnerPosition = blockArray.getPosition(block);
+                        spinner.setSelection(spinnerPosition);
+                    }
                 }
-                if(block != null){
-                    int spinnerPosition = blockArray.getPosition(block);
-                    spinner.setSelection(spinnerPosition);
-                }
-            }
             }
         });
     }
 
 
     private void updateProfile() {
-        if(!nameEditText.getText().toString().equals("") && !phoneNoEditText.getText().toString().equals("") && !roomNoEditText.getText().toString().equals("") ){
+        if(!nameEditText.getText().toString().equals("") && !phoneNoEditText.getText().toString().equals("") ){
             name = nameEditText.getText().toString();
             phoneNo = phoneNoEditText.getText().toString();
-            roomNo = roomNoEditText.getText().toString();
             block = spinner.getSelectedItem().toString();
             ProfileMap.put("name", name);
             ProfileMap.put("phoneNo", phoneNo);
-            ProfileMap.put("roomNo", roomNo);
             ProfileMap.put("block", block);
             ProfileMap.put("imageUrl", profileUrl);
             ProfileMap.put("time", FieldValue.serverTimestamp());
             if(filePath == null)
-            SaveToFirebase();
+                SaveToFirebase();
             else{
                 uploadImage();
             }
@@ -196,8 +197,8 @@ public class ProfileFragment extends Fragment {
     }
 
     private void SaveToFirebase() {
-        firestore.collection(  "profiles/students/profile")
-                .document(studentId).set(ProfileMap)
+        firestore.collection(  "profiles/warden/profile")
+                .document(wardenId).set(ProfileMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -218,7 +219,7 @@ public class ProfileFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                  block = parent.getSelectedItem().toString();
+                block = parent.getSelectedItem().toString();
             }
 
             @Override
@@ -234,8 +235,8 @@ public class ProfileFragment extends Fragment {
     }
     @Override
     public void onActivityResult(int requestCode,
-                                    int resultCode,
-                                    Intent data)
+                                 int resultCode,
+                                 Intent data)
     {
 
         super.onActivityResult(requestCode,

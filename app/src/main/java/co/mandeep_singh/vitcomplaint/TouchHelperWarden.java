@@ -10,13 +10,14 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import co.mandeep_singh.vitcomplaint.Adapter.HomeListAdapter;
+import co.mandeep_singh.vitcomplaint.Adapter.HomeListAdapterWarden;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-public class TouchHelper extends ItemTouchHelper.SimpleCallback {
-    private HomeListAdapter adapter;
+public class TouchHelperWarden extends ItemTouchHelper.SimpleCallback {
+    private HomeListAdapterWarden adapter;
 
 
-    public TouchHelper(HomeListAdapter adapter) {
+    public TouchHelperWarden(HomeListAdapterWarden adapter) {
         super(0,ItemTouchHelper.RIGHT);
         this.adapter = adapter;
     }

@@ -8,7 +8,7 @@
     >
 
     <TextView
-        android:id="@+id/home"
+        android:id="@+id/friends"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/curved_top"
@@ -16,14 +16,15 @@
         android:paddingStart="16dp"
         android:paddingTop="16dp"
         android:paddingBottom="25dp"
-        android:text="@string/home"
+        android:text="Wall"
         android:textColor="@color/white"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <ImageButton
-        android:id="@+id/plusButton"
+        android:id="@+id/notifications_btn_warden"
         android:layout_width="38dp"
         android:layout_height="38dp"
         android:layout_marginStart="16dp"
@@ -31,41 +32,42 @@
         android:background="@color/indigo"
         android:scaleType="fitXY"
         android:tint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/home"
+        app:layout_constraintBottom_toBottomOf="@+id/friends"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.952"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_baseline_add_24" />
+        app:srcCompat="@drawable/ic_baseline_add_alert_24" />
 
-<!--    <EditText-->
-<!--        android:id="@+id/editTextTextPersonName"-->
-<!--        android:layout_width="297dp"-->
-<!--        android:layout_height="48dp"-->
-<!--        android:layout_marginTop="28dp"-->
-<!--        android:drawableLeft="@drawable/ic_baseline_search_24"-->
-<!--        android:ems="10"-->
-<!--        android:hint="Search"-->
-<!--        android:minWidth="250dp"-->
-<!--        android:padding="10dp"-->
-<!--        android:background="@drawable/rounded_border_edittext"-->
-<!--        android:inputType="textPersonName"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/home" />-->
+    <Button
+        android:id="@+id/upload_file_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/upload_file"
+        android:background="@drawable/rounded_button_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/friends" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/home_list"
-        android:layout_width="match_parent"
+    <GridView
+        android:id="@+id/gridView_warden"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:paddingBottom="20dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:numColumns="2"
+        android:verticalSpacing="20dp"
+        android:horizontalSpacing="20dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home"
+        app:layout_constraintTop_toBottomOf="@+id/upload_file_button"
         app:layout_constraintVertical_bias="0.0" />
 
 

@@ -17,7 +17,7 @@ public class TouchHelper extends ItemTouchHelper.SimpleCallback {
 
 
     public TouchHelper(HomeListAdapter adapter) {
-        super(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        super(0,ItemTouchHelper.RIGHT);
         this.adapter = adapter;
     }
 

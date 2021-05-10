@@ -2,10 +2,13 @@ package co.mandeep_singh.vitcomplaint;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -28,6 +31,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import co.mandeep_singh.vitcomplaint.Adapter.HomeListAdapter;
 import co.mandeep_singh.vitcomplaint.Adapter.StudentsListAdapter;
@@ -41,6 +47,7 @@ public class StudentsFragmentWarden extends Fragment implements OnDialogCloseLis
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private StudentsListAdapter adapter;
     private List<StudentModel> mList;
+    private EditText studentSearch;
     private Query query;
     private ListenerRegistration listenerRegistration;
 
@@ -49,13 +56,52 @@ public class StudentsFragmentWarden extends Fragment implements OnDialogCloseLis
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_studentlist_warden, container,false);
         recyclerView = rootView.findViewById(R.id.student_list_list);
+        studentSearch = rootView.findViewById(R.id.students_list_search);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        establishAddComplaint();
+        establishAddStudents();
+        addSearchFunction();
         return rootView;
     }
 
-    private void establishAddComplaint() {
+    private void addSearchFunction() {
+        studentSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String search_field = studentSearch.getText().toString().toLowerCase();
+
+                if(!search_field.isEmpty() && !search_field.equals("")){
+                    List<StudentModel> tempList = Optional.ofNullable(mList)
+                        .map(List::stream)
+                        .orElseGet(Stream::empty)
+                        .filter(f -> (f.getName().toLowerCase().startsWith(search_field) || f.getRoomNo().toLowerCase().startsWith(search_field) || f.getBlock().toLowerCase().charAt(0) == search_field.charAt(0)))
+                        .collect(Collectors.toList());
+                StudentsListAdapter adapter1 = new StudentsListAdapter(StudentsFragmentWarden.this, tempList);
+                    ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new TouchHelperStudentList(adapter1));
+                    itemTouchHelper.attachToRecyclerView(recyclerView);
+                    recyclerView.swapAdapter(adapter1,true);
+                }
+                else {
+                    recyclerView.swapAdapter(adapter,true);
+                }
+            }
+
+
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+
+    private void establishAddStudents() {
         mList = new ArrayList<>();
         adapter = new StudentsListAdapter(StudentsFragmentWarden.this, mList);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new TouchHelperStudentList(adapter));

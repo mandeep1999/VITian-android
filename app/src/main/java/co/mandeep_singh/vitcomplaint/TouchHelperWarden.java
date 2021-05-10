@@ -18,7 +18,7 @@ public class TouchHelperWarden extends ItemTouchHelper.SimpleCallback {
 
 
     public TouchHelperWarden(HomeListAdapterWarden adapter) {
-        super(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        super(0,ItemTouchHelper.RIGHT);
         this.adapter = adapter;
     }
 

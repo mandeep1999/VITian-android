@@ -120,6 +120,8 @@ public class HomeListAdapterWarden extends RecyclerView.Adapter<HomeListAdapterW
         return homeList.size();
     }
 
+
+
     public class MyViewHolder extends RecyclerView.ViewHolder{
         Spinner status, urgent;
         TextView complaint_type, roomNo, remark;

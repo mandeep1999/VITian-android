@@ -2,9 +2,12 @@ package co.mandeep_singh.vitcomplaint;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
@@ -27,12 +30,17 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import co.mandeep_singh.vitcomplaint.Adapter.HomeListAdapter;
 import co.mandeep_singh.vitcomplaint.Adapter.HomeListAdapterWarden;
+import co.mandeep_singh.vitcomplaint.Adapter.StudentsListAdapter;
 import co.mandeep_singh.vitcomplaint.Auth.Auth;
 import co.mandeep_singh.vitcomplaint.Modal.HomeModel;
 import co.mandeep_singh.vitcomplaint.Modal.ProfileModel;
+import co.mandeep_singh.vitcomplaint.Modal.StudentModel;
 
 public class HomeFragementWarden extends Fragment implements OnDialogCloseListener {
     private RecyclerView recyclerView;
@@ -42,6 +50,7 @@ public class HomeFragementWarden extends Fragment implements OnDialogCloseListen
     private HomeListAdapterWarden adapter;
     private List<HomeModel> mList;
     private Query query;
+    private EditText searchComplaint;
     private ListenerRegistration listenerRegistration;
     private String block = Auth.block;
 
@@ -51,9 +60,11 @@ public class HomeFragementWarden extends Fragment implements OnDialogCloseListen
         rootView = inflater.inflate(R.layout.fragment_home_warden, container,false);
         recyclerView = rootView.findViewById(R.id.home_list);
         plusButton = (ImageButton)rootView.findViewById(R.id.plusButton);
+//        searchComplaint = (EditText) rootView.findViewById(R.id.search_complaint_warden);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         establishComplaints();
+//        addSearchFunction();
         return rootView;
     }
 
@@ -65,6 +76,45 @@ public class HomeFragementWarden extends Fragment implements OnDialogCloseListen
         recyclerView.setAdapter(adapter);
         showData();
     }
+
+    private void addSearchFunction() {
+        searchComplaint.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String search_field = searchComplaint.getText().toString().toLowerCase();
+                if(!search_field.isEmpty() && !search_field.equals("")){
+                    List<HomeModel> tempList = Optional.ofNullable(mList)
+                            .map(List::stream)
+                            .orElseGet(Stream::empty)
+                            .filter(f -> (f.getComplaintType().toLowerCase().startsWith(search_field) ||
+                                    f.getRoomNo().toLowerCase().startsWith(search_field) ||
+                                    f.getStatus().toLowerCase().startsWith(search_field) ||
+                                    f.getUrgent().toLowerCase().startsWith(search_field) ))
+                            .collect(Collectors.toList());
+                    HomeListAdapterWarden adapter1 = new HomeListAdapterWarden(HomeFragementWarden.this,tempList);
+                    ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new TouchHelperWarden(adapter1));
+                    itemTouchHelper.attachToRecyclerView(recyclerView);
+                    recyclerView.swapAdapter(adapter1,true);
+                }
+                else {
+                    recyclerView.swapAdapter(adapter,true);
+                }
+            }
+
+
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
     private void showData() {
         DocumentReference docRef = firestore.collection("profiles/warden/profile").document(Auth.id);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

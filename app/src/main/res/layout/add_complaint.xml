@@ -118,7 +118,8 @@
         android:layout_gravity="center"
         android:minWidth="200dp"
         android:textColor="@color/white"
-        android:backgroundTint="@color/indigo"
+        android:background="@drawable/rounded_button_color"
+        android:layout_marginBottom="20dp"
         android:text="@string/submit"
       />
 </LinearLayout>

@@ -29,5 +29,8 @@
     <string name="wall">Wall</string>
     <string name="phone_no">Phone No</string>
     <string name="students">Students</string>
+    <string name="select_file">Select File</string>
+    <string name="upload_file">Upload file</string>
+    <string name="pdf_name">pdf_name</string>
 
 </resources>

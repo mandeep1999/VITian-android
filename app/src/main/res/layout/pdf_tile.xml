@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="false"
+    android:focusable="false"
+    android:textIsSelectable="false"
+    android:focusableInTouchMode="false"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:textIsSelectable="false"
+        android:scaleType="fitCenter"
+        android:src="@drawable/pdf_icon" />
+
+    <TextView
+        android:id="@+id/pdf_title"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="@string/pdf_name"
+        android:clickable="false"
+        android:focusable="false"
+        android:textIsSelectable="false"
+        android:focusableInTouchMode="false"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+</LinearLayout>

@@ -25,6 +25,9 @@ public class HomeActivityWarden extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragementWarden()).commit();
         bottomNav.setSelectedItemId(R.id.home);
     }
+
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -66,4 +69,6 @@ public class HomeActivityWarden extends AppCompatActivity {
             return true;
         }
     };
+
+
 }

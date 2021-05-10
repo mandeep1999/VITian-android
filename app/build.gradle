@@ -45,6 +45,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.firebase:firebase-firestore:22.1.2'
     implementation 'com.google.firebase:firebase-storage:19.2.2'
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
     implementation 'com.google.firebase:firebase-auth:20.0.4'
     implementation 'org.jetbrains:annotations:15.0'
     testImplementation 'junit:junit:4.+'

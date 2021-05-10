@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/notifications_btn"
+        android:id="@+id/notifications_btn_warden"
         android:layout_width="38dp"
         android:layout_height="38dp"
         android:layout_marginStart="16dp"
@@ -36,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.952"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_baseline_receipt_24" />
+        app:srcCompat="@drawable/ic_baseline_add_alert_24" />
 
     <Button
         android:id="@+id/upload_file_button"

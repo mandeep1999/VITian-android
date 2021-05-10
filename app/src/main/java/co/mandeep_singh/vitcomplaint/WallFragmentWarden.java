@@ -1,14 +1,18 @@
 package co.mandeep_singh.vitcomplaint;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -22,6 +26,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.DocumentChange;
@@ -46,8 +52,7 @@ import co.mandeep_singh.vitcomplaint.Modal.PdfModel;
 import static android.app.Activity.RESULT_OK;
 
 public class WallFragmentWarden extends Fragment {
-    ListView list, requestsList;
-    ImageButton NotificationsBtn;
+    ImageButton AlertBtn;
     GridView gridView;
     View rootView;
     Button uploadButton;
@@ -56,24 +61,13 @@ public class WallFragmentWarden extends Fragment {
     ArrayList<PdfModel> pdfList = new ArrayList<PdfModel>();
     private PdfAdapter adapter;
 
-    String[] subtitle ={
-            "Sub Title 1","Sub Title 2",
-            "Sub Title 3","Sub Title 4",
-            "Sub Title 5",
-    };
-    Integer[] imgid1={
-            R.drawable.ic_baseline_circle_notifications_24,R.drawable.ic_baseline_circle_notifications_24,
-            R.drawable.ic_baseline_circle_notifications_24,R.drawable.ic_baseline_circle_notifications_24,
-            R.drawable.ic_baseline_circle_notifications_24
-    };
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_wall_warden, container,false);
-        NotificationsBtn = rootView.findViewById(R.id.notifications_btn);
+        AlertBtn = rootView.findViewById(R.id.notifications_btn_warden);
         gridView = (GridView)rootView.findViewById(R.id.gridView_warden);
         uploadButton = (Button) rootView.findViewById(R.id.upload_file_button);
-        establishFriendsListBtn();
         establishGridViewForWarden();
         establishPdfs();
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -82,6 +76,12 @@ public class WallFragmentWarden extends Fragment {
                 Intent i = new Intent(getActivity(), ViewPdf.class);
                 i.putExtra("fileUrl", pdfList.get(position).getFileUrl());
                 startActivity(i);
+            }
+        });
+        AlertBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendAlert();
             }
         });
         return rootView;
@@ -126,28 +126,49 @@ public class WallFragmentWarden extends Fragment {
         });
     }
 
-
-    private void establishFriendsListBtn() {
-        NotificationsBtn.setOnClickListener(new View.OnClickListener() {
+    public void sendAlert(){
+        final String[] m_Text = new String[1];
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Send Alert");
+        final EditText input = new EditText(getActivity());
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
-                View bottomSheetView = LayoutInflater.from(getActivity()).inflate(R.layout.notifications_bottomsheet,(LinearLayout)rootView.findViewById(R.id.bottomSheetContainer2));
-                MyListAdapter3 adapter =new MyListAdapter3(getActivity(),subtitle,imgid1);
-                requestsList=(ListView)bottomSheetView.findViewById(R.id.requests_list);
-                requestsList.setAdapter(adapter);
+            public void onClick(DialogInterface dialog, int which) {
+                m_Text[0] = input.getText().toString();
+                if(!m_Text[0].equals("")){
+                    Map<String, Object> alertObject = new HashMap<>();
+                    alertObject.put("alertMessage", m_Text[0]);
+                    alertObject.put("block", Auth.block);
+                    alertObject.put("wardenId", Auth.id);
+                    alertObject.put("time", LocalDateTime.now().toString());
+                    _firestore.collection(  "alerts")
+                            .document(LocalDateTime.now().toString()).set(alertObject)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(getActivity(),"Alert sent",Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
 
-                bottomSheetView.findViewById(R.id.close_btn).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        bottomSheetDialog.dismiss();
-                    }
-                });
-                bottomSheetDialog.setContentView(bottomSheetView);
-                bottomSheetDialog.show();
             }
         });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
+
 
     ProgressDialog dialog;
 

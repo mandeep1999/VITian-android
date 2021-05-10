@@ -15,6 +15,9 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.DocumentChange;
@@ -25,29 +28,26 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import co.mandeep_singh.vitcomplaint.Adapter.AlertAdapter;
+import co.mandeep_singh.vitcomplaint.Adapter.HomeListAdapter;
 import co.mandeep_singh.vitcomplaint.Adapter.PdfAdapterStudent;
+import co.mandeep_singh.vitcomplaint.Auth.Auth;
+import co.mandeep_singh.vitcomplaint.Modal.AlertModel;
+import co.mandeep_singh.vitcomplaint.Modal.HomeModel;
 import co.mandeep_singh.vitcomplaint.Modal.PdfModel;
 
 
 public class WallFragment extends Fragment {
     ImageButton friendsListBtn;
-    ListView  requestsList;
+    RecyclerView recyclerView;
     GridView gridView;
     View rootView;
     FirebaseFirestore _firestore = FirebaseFirestore.getInstance();
     ArrayList<PdfModel> pdfList = new ArrayList<PdfModel>();
+
     private PdfAdapterStudent adapter;
 
-    String[] subtitle ={
-            "Sub Title 1","Sub Title 2",
-            "Sub Title 3","Sub Title 4",
-            "Sub Title 5",
-    };
-    Integer[] imgid1={
-            R.drawable.ic_baseline_circle_notifications_24,R.drawable.ic_baseline_circle_notifications_24,
-            R.drawable.ic_baseline_circle_notifications_24,R.drawable.ic_baseline_circle_notifications_24,
-            R.drawable.ic_baseline_circle_notifications_24
-    };
+
 
     @Nullable
     @Override
@@ -95,12 +95,14 @@ public class WallFragment extends Fragment {
         friendsListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ArrayList<AlertModel> alertsList = new ArrayList<>();
+                AlertAdapter adapterAlert;
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
                 View bottomSheetView = LayoutInflater.from(getActivity()).inflate(R.layout.notifications_bottomsheet,(LinearLayout)rootView.findViewById(R.id.bottomSheetContainer2));
-                MyListAdapter3 adapter =new MyListAdapter3(getActivity(),subtitle,imgid1);
-                requestsList=(ListView)bottomSheetView.findViewById(R.id.requests_list);
-                requestsList.setAdapter(adapter);
-
+                recyclerView = (RecyclerView) bottomSheetView.findViewById(R.id.notifications_list_recycle);
+                adapterAlert = new AlertAdapter(WallFragment.this, alertsList);
+                recyclerView.setAdapter(adapterAlert);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 bottomSheetView.findViewById(R.id.close_btn).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -109,8 +111,27 @@ public class WallFragment extends Fragment {
                 });
                 bottomSheetDialog.setContentView(bottomSheetView);
                 bottomSheetDialog.show();
+                showNotifications(alertsList , adapterAlert);
             }
         });
     }
+
+    private void showNotifications(ArrayList<AlertModel> List, AlertAdapter adapterAlert) {
+        _firestore.collection("alerts").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                for (DocumentChange documentChange : value.getDocumentChanges()) {
+                    if (documentChange.getType() == DocumentChange.Type.ADDED) {
+                        String id = documentChange.getDocument().getId();
+                        AlertModel alertModel = documentChange.getDocument().toObject(AlertModel.class).withId(id);
+                            List.add(alertModel);
+                            adapterAlert.notifyDataSetChanged();
+                    }
+                }
+
+            }
+        });
+    }
+
 
 }
